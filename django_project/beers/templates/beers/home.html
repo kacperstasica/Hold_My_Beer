@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}HoldMyBeer - Home Page{% endblock title %}
+
+
+{% block banner %}
+    <div id="banner" class="container"><img src="{% static 'images/shutterstock_1031156875.jpg' %}" width="1200" height="400" alt="" /></div>
+{% endblock banner %}
+
+{% block content %}
+
+    <div id="content">
+
+{#  TODO  #}
+{#    {% if is_paginated %}#}
+{#        {% if page_obj.has_previous %}#}
+{#            <a class="button" href="?page={{ page_obj.previous_page_number }}">Previous</a>#}
+{#        {% endif %}#}
+{#        {% if page_obj.has_next %}#}
+{#            <a class="button" href="?page={{ page_obj.next_page_number }}">Next</a>#}
+{#        {% endif %}#}
+{#    {% endif %}#}
+
+    {% for beer in beers %}
+        <h2>{{ beer.product_name }}</h2>
+        <img class="img-thumbnail" src="{{beer.image.url}}">
+        <p>Price: {{ beer.price }} PLN</p>
+        <p>Alc: {{ beer.alcohol }} %</p>
+        <p>Description:<br> {{ beer.description }}</p>
+    {% endfor %}
+    </div>
+
+{% endblock content %}
+
+{% block sidebar %}
+    		<div id="sidebar">
+			<div class="title">
+				<h2>Beers On Tap</h2>
+			</div>
+			<ul class="default">
+                {% for beer in beers %}
+				<li><a href="#">{{ beer.product_name }}</a></li>
+                {% endfor %}
+			</ul>
+			<div class="section">
+				<h3>Add To Shopping Cart</h3>
+				<p>Order the beer that you like</p>
+				<a href="#" class="button button-small">Add To The Cart</a>
+			</div>
+		</div>
+
+
+{% endblock sidebar %}
