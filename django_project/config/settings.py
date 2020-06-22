@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -25,13 +24,11 @@ SECRET_KEY = '6x*@&j94f9**%(9t6#ca@p@761*h6=m%h=s=lnv7yb6413x_3-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['172.20.10.2', 'localhost', '127.0.0.1', '0.0.0.0']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'crispy_forms',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,9 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'beers',
     'users',
     'orders',
+
+    'crispy_forms',
+    'getpaid',
+    'getpaid_payu',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -86,7 +87,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -106,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -119,7 +118,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -143,5 +141,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'kastasica@gmail.com'
-EMAIL_HOST_PASSWORD = 'sfhy cwiu upfy gzbk'
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+GETPAID_ORDER_MODEL = "orders.PayingOrder"
+
+GETPAID_BACKEND_SETTINGS = {
+    "getpaid_payu": {  # dotted import path of the plugin
+        # refer to backend docs and take these from your merchant panel:
+        "pos_id": 389263,
+        "second_key": "2b52fd4c9f5d6efc10f0578da3970c31",
+        "oauth_id": 389263,
+        "oauth_secret": "c045f4f2040376f7840b16af29caaee4",
+    },
+}

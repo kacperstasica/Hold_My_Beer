@@ -1,5 +1,12 @@
 {% extends "base.html" %}
-{% block title %}{% endblock title %}
+{% load static %}
+
+
+{% block styles %}
+<link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all" />
+{% endblock styles %}
+
+{% block title %}Logout Page{% endblock title %}
 {% block content %}
         <h2>You have been logged out</h2>
         <div class="border-top pt-3">

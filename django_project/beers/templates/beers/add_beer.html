@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% load crispy_forms_tags %}
+
+{% block styles %}
+<link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all" />
+{% endblock styles %}
 
 {% block title %}Add Beer Page{% endblock title %}
 {% block content %}
@@ -11,7 +17,7 @@
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
-                <button type="submit" class="btn btn-outline-info">Submit</button>
+                <button type="submit" class="btn btn-lg btn-secondary btn-block">Submit</button>
             </div>
         </form>
         <div class="border-top pt-3">

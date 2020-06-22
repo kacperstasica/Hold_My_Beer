@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+<link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all" />
+{% endblock styles %}
+
+{% block title %}
+Shopping Cart
+{% endblock title %}
+
+{% block content %}
+
+
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Shopping Cart <br>
+          {{ order.user.username }}
+        </legend>
+        {% if order.orderedbeer_set.all %}
+             <form method="post" action="{% url 'orders:delete' object.id %}">{% csrf_token %}
+                <input type="hidden" value="{{ object.id }}" />
+                <input class="btn btn-danger" type="submit" value="Remove last Item" />
+            </form>
+        {% endif %}
+    </fieldset>
+
+    {% if messages %}
+     {% for message in messages %}
+         <div class="text-center alert alert-{{ message.tags }}">
+             {{ message|safe }}
+         </div>
+     {% endfor %}
+    {% endif %}
+
+   <div class="container">
+	<div class="row">
+              {% for detail in order.orderedbeer_set.all %}
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-2"><img class="img-thumbnail" src="{{detail.beer.image.url}}" width="100px" height="100px">
+                            </div>
+                            <div class="col-xs-4">
+                                <h4 class="product-name"><strong>{{ detail.beer.product_name }}</strong></h4><h4><small>Barrel</small></h4>
+                                <h4><strong>{{ detail.amount }}<span class="text-muted">x</span></strong></h4>
+                            </div>
+                        </div>
+                            <hr>
+                {% empty %}
+                  <hr>
+                      <div class="panel-body">
+                        <div class="row">
+                            <h1>Empty Cart</h1>
+                        </div>
+                      </div>
+                  <hr>
+                {% endfor %}
+
+				<div class="panel-footer">
+					<div class="row text-center">
+						<div class="container">
+							<h4 class="align-right">Total <strong>${{ order.calculate_order_payment }}</strong></h4>
+						</div>
+						<div class="container">
+
+                            <form action="{% url 'orders:confirm-order' %}">
+                                <input class="btn btn-lg btn-secondary btn-block" type="submit" value="Checkout" />
+                            </form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

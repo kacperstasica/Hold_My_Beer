@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h2>Choose payment broker:</h2>
+<form action="{% url 'getpaid:create-payment' %}" method="post">
+  {% csrf_token %}
+  {{ payment_form|crispy }}
+  <input type="submit" value="Checkout">
+</form>
+
+{% endblock content %}

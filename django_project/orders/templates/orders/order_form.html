@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block styles %}
+<link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all" />
+{% endblock styles %}
+
+{% block title %}Order Page{% endblock title %}
+{% block content %}
+    {% if order_status == 'ED' %}
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Order Beer</legend>
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-secondary btn-block" type="submit">Add To Order</button>
+                </div>
+            </form>
+            <p>{{ get_price }}</p>
+        </div>
+    {% else %}
+        <div>
+           <p>Your order is processing. Are you sure, you want to edit?</p>
+            <form action="{% url 'orders:change-order-status' %}">
+                <input class="btn btn-lg btn-secondary" type="submit" value="Edit Order" />
+            </form>
+        </div>
+    {% endif %}
+{% endblock content %}
+
+

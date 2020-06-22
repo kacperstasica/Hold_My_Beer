@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Form Page{% endblock title %}
+
+{% block content %}
+{#    {% if messages %}#}
+{#     {% for message in messages %}#}
+{#         <div class="text-center alert alert-{{ message.tags }}">#}
+{#             {{ message|safe }}#}
+{#         </div>#}
+{#     {% endfor %}#}
+{#    {% endif %}#}
+
+<h1>Contact Us</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="form-actions">
+      <button class="btn btn-lg btn-secondary" type="submit">Send</button>
+    </div>
+</form>
+
+{% endblock content %}

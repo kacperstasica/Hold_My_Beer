@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Beer Detail Page{% endblock title %}
+
+
+{% block content %}
+      <div class="container">
+
+        <div class="card mt-4">
+          <img class="card-img-top img-fluid" src="{% static 'images/shutterstock_1031156875.jpg' %}" alt="product_image">
+          <div class="card-body">
+            <h3 class="card-title">{{ beer.product_name }}</h3>
+            <h4>{{ beer.price }} PLN</h4>
+            <p class="card-text">{{ beer.description }}</p>
+            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+            4.0 stars
+          </div>
+            <form action="{% url 'orders:order-beer' %}">
+                <input type="submit" class="btn btn-lg btn-secondary btn-block" value="Go to Orders" />
+            </form>
+        </div>
+
+
+    <div class="card card-outline-secondary my-4">
+      <div class="card-header text-center">
+           {{ beer.product_name }} Reviews
+      </div>
+    </div>
+    <div class="text-center">
+      <a href="{% url 'beers:create-review' beer.id %}" class="btn btn-lg btn-secondary text-center">Review this Beer</a>
+    </div>
+
+
+      <div class="card card-outline-secondary my-4">
+          <div class="card-body">
+    {% for review in reviews %}
+          <img class="rounded-circle article-img" src="{{ review.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+          {% if review.author == user %}
+                <a class="mr-2" href="{% url 'users:profile' %}">{{ review.author }}</a>
+          {% else %}
+                {{ review.author }}
+          {% endif %}
+              <small class="text-muted">{{ review.date_posted|date:"F d, Y"}}</small>
+          {% if review.author == user %}
+                  <div>
+                      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'beers:review-update' review.id %}">Update</a>
+                      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'beers:review-delete' review.id %}">Delete</a>
+                  </div>
+          {% endif %}
+                <p>{{ review.content }}</p>
+                <hr><hr>
+        {% empty %}
+                <p>No reviews yet.</p>
+    {% endfor %}
+          </div>
+      </div>
+</div>
+      </div></div>
+
+{% endblock content %}
+
+{% block footer %}
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Hold My Beer 2020</p>
+    </div>
+  </footer>
+{% endblock footer %}

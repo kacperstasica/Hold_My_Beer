@@ -19,13 +19,15 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path, include
 
-from beers import views as beer_views
+from beers.views import BeerListView
 
 urlpatterns = [
+    path('', BeerListView.as_view(), name='beer-list'),
     path('admin/', admin.site.urls),
     path('beers/', include('beers.urls')),
-    path('users/', include('users.urls')),
     path('orders/', include('orders.urls')),
+    path('payments/', include('getpaid.urls')),
+    path('users/', include('users.urls')),
     path('password-reset/',
          auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'),
          name='password_reset'),
@@ -38,7 +40,6 @@ urlpatterns = [
     path('password-reset-complete/',
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name='password_reset_complete'),
-    path('', beer_views.BeerListView.as_view(), name='beer-list'),
 ]
 
 if settings.DEBUG:
