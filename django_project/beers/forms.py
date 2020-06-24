@@ -46,5 +46,6 @@ class ReviewForm(forms.ModelForm):
         fields = [
             'content',
             'user',
-            'beer'
+            'beer',
+            'rating',
         ]

@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
 from .forms import AddBeerForm, ReviewForm
 from .models import Beer, Review
@@ -23,18 +23,16 @@ class AddBeerView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     )
 
 
-class BeerReviewListView(LoginRequiredMixin, ListView):
-    model = Review
+class BeerDetailView(LoginRequiredMixin, DetailView):
+    model = Beer
     template_name = 'beers/beer_detail.html'
-    context_object_name = 'reviews'
-
-    def get_queryset(self):
-        beer = get_object_or_404(Beer, pk=self.kwargs.get('pk'))
-        return Review.objects.filter(beer=beer).order_by('-date_posted')
 
     def get_context_data(self, **kwargs):
-        context = super(BeerReviewListView, self).get_context_data(**kwargs)
-        context['beer'] = get_object_or_404(Beer, pk=self.kwargs.get('pk'))
+        context = super().get_context_data(**kwargs)
+        average_rating = Review.count_rating(beer_id=self.kwargs.get('pk'))
+        if average_rating is not None:
+            context['average_rating'] = round(average_rating, 2)
+            context['rating_as_int'] = int(average_rating)
         return context
 
 
@@ -53,7 +51,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
 class ReviewUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Review
-    fields = ['content']
+    fields = ['content', 'rating']
 
     def test_func(self):
         review = self.get_object()

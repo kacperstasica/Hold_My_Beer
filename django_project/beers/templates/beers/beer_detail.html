@@ -3,6 +3,7 @@
 
 {% block title %}Beer Detail Page{% endblock title %}
 
+{% block styles %}<link rel="stylesheet" type="text/css" href="{% static 'css/starability-all.min.css' %}" />{% endblock styles %}
 
 {% block content %}
       <div class="container">
@@ -10,12 +11,16 @@
         <div class="card mt-4">
           <img class="card-img-top img-fluid" src="{% static 'images/shutterstock_1031156875.jpg' %}" alt="product_image">
           <div class="card-body">
-            <h3 class="card-title">{{ beer.product_name }}</h3>
-            <h4>{{ beer.price }} PLN</h4>
-            <p class="card-text">{{ beer.description }}</p>
-            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            4.0 stars
-          </div>
+            <h3 class="card-title">{{ object.product_name }}</h3>
+            <h4>{{ object.price }} PLN</h4>
+            <p class="card-text">{{ object.description }}</p>
+          <fieldset class="starability-result mx-auto" data-rating="{{ rating_as_int }}">
+        </fieldset>
+        {% if average_rating %}
+          <p style="text-align: center;">Rated: {{ average_rating }} stars</p>
+        {% else %}
+          <p style="text-align: center;">No ratings</p>
+        {% endif %}
             <form action="{% url 'orders:order-beer' %}">
                 <input type="submit" class="btn btn-lg btn-secondary btn-block" value="Go to Orders" />
             </form>
@@ -24,7 +29,7 @@
 
     <div class="card card-outline-secondary my-4">
       <div class="card-header text-center">
-           {{ beer.product_name }} Reviews
+           {{ object.product_name }} Reviews
       </div>
     </div>
     <div class="text-center">
@@ -34,8 +39,12 @@
 
       <div class="card card-outline-secondary my-4">
           <div class="card-body">
-    {% for review in reviews %}
+    {% for review in object.review_set.all %}
           <img class="rounded-circle article-img" src="{{ review.author.profile.image.url }}">
+          {% if review.rating %}
+            <fieldset class="starability-result mx-auto float-right" data-rating="{{ review.rating }}">
+            </fieldset>
+          {% endif %}
           <div class="media-body">
             <div class="article-metadata">
           {% if review.author == user %}
