@@ -48,14 +48,15 @@ class ProfileView(LoginRequiredMixin, View):
             return redirect('users:profile')
 
 
-class ContactView(LoginRequiredMixin, FormView):
+class ContactView(FormView):
     form_class = ContactForm
     template_name = 'users/contact_form.html'
     success_url = reverse_lazy('users:contact-success')
 
     def get_form_kwargs(self):
         kwargs = super(ContactView, self).get_form_kwargs()
-        kwargs.update({'user': self.request.user})
+        if self.request.user is not None:
+            kwargs.update({'user': self.request.user})
         return kwargs
 
     def form_valid(self, form):
@@ -77,5 +78,5 @@ class ContactView(LoginRequiredMixin, FormView):
             return HttpResponse('Invalid header found.')
 
 
-class ContactSuccessView(LoginRequiredMixin, TemplateView):
+class ContactSuccessView(TemplateView):
     template_name = 'users/contact_success.html'

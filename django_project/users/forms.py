@@ -58,8 +58,12 @@ class ContactForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
-        self.user_email = self.user.email
+        if not self.user.is_authenticated:
+            self.user_email = ''
+        else:
+            self.user_email = self.user.email
         super(ContactForm, self).__init__(*args, **kwargs)
-        self.fields['from_email'] = forms.EmailField(initial=self.user_email, label='From E-mail:')
+        self.fields['from_email'] = forms.EmailField(initial=self.user_email or '', label='From E-mail:')
+        self.fields['from_email'].widget.attrs['placeholder'] = 'Please Enter Email'
         self.fields['subject'].widget.attrs['placeholder'] = 'Subject'
         self.fields['message'].widget.attrs['placeholder'] = 'Please Enter Your Message'
