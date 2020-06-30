@@ -16,12 +16,6 @@ Shopping Cart
         <legend class="border-bottom mb-4">Shopping Cart <br>
           {{ order.user.username }}
         </legend>
-        {% if order.orderedbeer_set.all %}
-             <form method="post" action="{% url 'orders:delete' object.id %}">{% csrf_token %}
-                <input type="hidden" value="{{ object.id }}" />
-                <input class="btn btn-danger" type="submit" value="Remove last Item" />
-            </form>
-        {% endif %}
     </fieldset>
 
     {% if messages %}
@@ -41,6 +35,7 @@ Shopping Cart
                             </div>
                             <div class="col-xs-4">
                                 <h4 class="product-name"><strong>{{ detail.beer.product_name }}</strong></h4><h4><small>Barrel</small></h4>
+                                <a href="{% url 'orders:delete' detail.id %}" class="btn btn-danger">Remove from Cart</a>
                                 <h4><strong>{{ detail.amount }}<span class="text-muted">x</span></strong></h4>
                             </div>
                         </div>

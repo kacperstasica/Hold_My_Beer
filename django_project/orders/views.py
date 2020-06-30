@@ -56,13 +56,9 @@ class ShoppingCartView(LoginRequiredMixin, DetailView):
         return Order.objects.filter(user=self.request.user).first()
 
 
-class RemoveOrderedBeerView(LoginRequiredMixin, DeleteView):
+class OrderedBeerDeleteView(LoginRequiredMixin, DeleteView):
     model = OrderedBeer
-    template_name = 'orders/shopping_cart.html'
     success_url = reverse_lazy('orders:shopping-cart')
-
-    def get_object(self, **kwargs):
-        return OrderedBeer.objects.filter(order_id=self.kwargs.get("id")).last()
 
 
 class ConfirmOrderView(LoginRequiredMixin, View):
