@@ -11,4 +11,4 @@ django-getpaid-payu: <br>
 https://pypi.org/project/django-getpaid-payu/ <br>
 
 App presentation film:
-https://www.youtube.com/watch?v=-7bXVZ4D_EY&feature=youtu.be
+https://youtu.be/-7bXVZ4D_EY
