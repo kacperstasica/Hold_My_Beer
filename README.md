@@ -1,4 +1,4 @@
-# DJANGO_PROJECT_CODERSLAB
+# Hold My Beer App
 Final project for CodersLab. 
 
 Full featured web-app called Hold My Beer is a virtual store for a small Brewery/Wholesale with payments, reviews and user's profiles. 
